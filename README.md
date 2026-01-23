@@ -1,20 +1,16 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg)
 
-Placeholder update
-
-# Tiny Tapeout Analog Project Template
+# Tiny Tapeout Analog Project - ADC Components
 
 - [Read the documentation for project](docs/info.md)
 
-## What is Tiny Tapeout?
+I aim to build as much of an ADC as I can as a complete analog novice with access to textbooks. We'll see where that gets me.
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital designs manufactured on a real chip.
+## Analog project
 
-To learn more and get started, visit https://tinytapeout.com.
+As a Tiny Tapeout analog project, I followed the [analog specs page](https://tinytapeout.com/specs/analog/).
 
-## Analog projects
-
-For specifications and instructions, see the [analog specs page](https://tinytapeout.com/specs/analog/).
+# Remainder of template
 
 ## Enable GitHub actions to build the results page
 
