@@ -24,19 +24,14 @@ x1 CLK CLKB VDD VSS out in track_and_hold
     tran 0.05n 3u
     remzerovec
     write testbench.raw
-    set appendwrite
 
     let lin-tstart = 5n
     let lin-tstep = 15n
-    let in_rel = in - 1.65
-    let out_rel = out - 1.65
-    linearize in_rel out_rel
-    fft in_rel out_rel
-    let in_spec = in_rel
-    let out_spec = out_rel
-    let in_db = vdb(in_spec)
-    let out_db = vdb(out_spec)
-    unlet in out
+    let in_spec = in - 1.65
+    let out_spec = out - 1.65
+    linearize in_spec out_spec
+    fft in_spec out_spec
+    set appendwrite
     write testbench.raw
   .endc
 

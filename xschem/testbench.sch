@@ -31,10 +31,10 @@ logy=0
 
 
 
-x2=4.0962519e-08
+x2=450n
 y1=0
 y2=3.3
-x1=-2.2720382e-09
+x1=0
 rawfile=$netlist_dir/testbench.raw
 sim_type=tran}
 B 2 890 -420 1690 -20 {flags=graph
@@ -51,17 +51,17 @@ divx=5
 subdivx=4
 xlabmag=1.0
 ylabmag=1.0
-node="in_db
-out_db"
-color="4 5"
+node="\\"in (dB);in_spec db20()\\"
+\\"out (dB);out_spec db20()\\""
+color="4 6"
 dataset=-1
 unitx=1
 logx=0
 logy=0
-sim_type=ac
+sim_type=sp
 rawfile=$netlist_dir/testbench.raw
-y2=150
-y1=-10
+y2=10
+y1=-150
 digital=0
 subdivy=4}
 N 800 510 800 520 {
@@ -136,19 +136,14 @@ value="
     tran 0.05n 3u
     remzerovec
     write testbench.raw
-    set appendwrite
 
     let lin-tstart = 5n
     let lin-tstep = 15n
-    let in_rel = in - 1.65
-    let out_rel = out - 1.65
-    linearize in_rel out_rel
-    fft in_rel out_rel
-    let in_spec = in_rel
-    let out_spec = out_rel
-    let in_db = vdb(in_spec)
-    let out_db = vdb(out_spec)
-    unlet in out
+    let in_spec = in - 1.65
+    let out_spec = out - 1.65
+    linearize in_spec out_spec
+    fft in_spec out_spec
+    set appendwrite
     write testbench.raw
   .endc
 "}
