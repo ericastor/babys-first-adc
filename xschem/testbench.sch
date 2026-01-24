@@ -45,7 +45,7 @@ ypos2=2
 divy=5
 
 unity=1
-x1=1
+x1=0
 x2=33Meg
 divx=5
 subdivx=4
