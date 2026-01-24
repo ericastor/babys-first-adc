@@ -80,7 +80,7 @@ lab=in}
 C {devices/iopin.sym} 380 -170 2 0 {name=VSS lab=VSS}
 C {devices/iopin.sym} 380 -190 0 1 {name=VDD lab=VDD}
 C {devices/ipin.sym} -240 0 0 0 {name=in lab=in}
-C {sky130_fd_pr/cap_mim_m3_1.sym} 180 70 0 0 {name=C1 model=cap_mim_m3_1 W=10 L=10 MF=1 spiceprefix=X}
+C {sky130_fd_pr/cap_mim_m3_1.sym} 180 70 0 0 {name=C1 model=cap_mim_m3_1 W=5 L=5 MF=1 spiceprefix=X}
 C {devices/vsource.sym} -160 -80 0 1 {name=V1 value=3.3 savecurrent=false}
 C {sky130_fd_pr/nfet_g5v0d10v5.sym} -60 -110 1 0 {name=M1
 L=0.5
@@ -128,7 +128,7 @@ C {devices/lab_pin.sym} 40 140 0 1 {name=p11 sig_type=std_logic lab=VDD}
 C {devices/lab_pin.sym} 40 180 0 1 {name=p12 sig_type=std_logic lab=VSS}
 C {sky130_fd_pr/pfet_g5v0d10v5.sym} -60 110 3 0 {name=M2
 L=0.5
-W=1.36
+W=1.28
 nf=1
 mult=1
 ad="'int((nf+1)/2) * W/nf * 0.29'" 
