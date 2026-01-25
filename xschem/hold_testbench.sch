@@ -52,13 +52,6 @@ value="
 
 "
 spice_ignore=false}
-C {devices/launcher.sym} 190 30 0 0 {name=h17 
-descr="Load waves" 
-tclcommand="
-xschem raw_read $netlist_dir/[file tail [file rootname [xschem get current_name]]].raw tran
-
-"
-}
 C {devices/vsource.sym} 920 550 0 0 {name=VDD_src value=3.3 savecurrent=false}
 C {devices/gnd.sym} 920 580 0 0 {name=l2 lab=GND}
 C {devices/lab_pin.sym} 920 510 0 0 {name=p1 sig_type=std_logic lab=VDD}
