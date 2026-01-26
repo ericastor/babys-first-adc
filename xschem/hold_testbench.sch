@@ -106,6 +106,8 @@ value="
   let v = v_tracked[$&n_points - 1]
   let d = hold_delta[$&n_points - 1] * 1000
   echo \\"$&d mV \\\\@ $&v V\\"
+  let m = mean(hold_delta)*1000
+  echo \\"avg error: $&m mV\\"
 .endc
 "}
 C {devices/lab_pin.sym} 800 730 0 0 {name=p7 sig_type=std_logic lab=VSS}

@@ -65,8 +65,9 @@ rawfile=$netlist_dir/testbench.raw
 y1=-150
 digital=0
 subdivy=4
-x2=33Meg
-y2=10}
+
+y2=10
+x2=33Meg}
 N 800 510 800 520 {
 lab=VDD}
 N 680 510 680 520 {
@@ -149,15 +150,18 @@ value="
     set appendwrite
     write testbench.raw
     
-    meas sp peak_value MAX vdb(out_spec) from=1M to=26Meg
-    echo \\"Peak noise: $&peak_value dB\\"
+    meas sp peak_noise MAX vdb(out_spec) from=1Meg to=6Meg
+    echo \\"Peak noise < 6Meg: $&peak_noise dB\\"
+    
+    meas sp peak_harmonic MAX vdb(out_spec) from=10Meg to=33Meg
+    echo \\"Peak harmonic: $&peak_harmonic dB\\"
   .endc
 "}
 C {devices/lab_pin.sym} 680 730 0 0 {name=p7 sig_type=std_logic lab=VSS}
 C {devices/lab_pin.sym} 680 650 0 0 {name=p8 sig_type=std_logic lab=in}
 C {devices/lab_pin.sym} 300 160 0 0 {name=p9 sig_type=std_logic lab=in}
 C {devices/vsource.sym} 680 690 0 0 {name=V4 value="0 ac 1 0
-+ sin(1.65 1.65 29e6 0 0 90)"}
++ sin(1.65 1.65 7e6 0 0 90)"}
 C {sky130_fd_pr/nfet_g5v0d10v5.sym} 770 160 0 0 {name=M1
 L=0.5
 W=20
