@@ -183,4 +183,4 @@ C {devices/lab_pin.sym} 900 660 0 0 {name=p14 sig_type=std_logic lab=HLD}
 C {devices/lab_pin.sym} 900 760 0 0 {name=p15 sig_type=std_logic lab=TRK}
 C {devices/lab_pin.sym} 470 80 0 1 {name=p16 sig_type=std_logic lab=HLD}
 C {devices/lab_pin.sym} 450 80 0 0 {name=p17 sig_type=std_logic lab=TRK}
-C {track_and_hold.sym} 460 160 0 0 {name=x1}
+C {parametric_track_and_hold.sym} 460 160 0 0 {name=x1 WT=1 PFT=1.21 PF=2 WS=5 WB=5 CB=18}
