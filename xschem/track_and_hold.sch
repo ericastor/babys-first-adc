@@ -182,12 +182,6 @@ C {devices/lab_pin.sym} -60 -60 3 0 {name=p2 sig_type=std_logic lab=VSS}
 C {devices/lab_pin.sym} 180 110 3 0 {name=p3 sig_type=std_logic lab=VSS}
 C {devices/iopin.sym} 0 360 3 1 {name=TRK lab=TRK}
 C {devices/iopin.sym} 0 -360 1 1 {name=HLD lab=HLD}
-C {devices/simulator_commands_shown.sym} 30 -400 0 0 {name=COMMANDS
-simulator=ngspice
-only_toplevel=false 
-value="
-.model switch1 sw vt=1.65 vh=0 ron=1 roff=1G
-"}
 C {devices/lab_pin.sym} 40 -280 0 1 {name=p5 sig_type=std_logic lab=VSS}
 C {devices/lab_pin.sym} -120 360 3 0 {name=p8 sig_type=std_logic lab=TRK}
 C {devices/lab_pin.sym} -60 60 1 0 {name=p9 sig_type=std_logic lab=VDD}
