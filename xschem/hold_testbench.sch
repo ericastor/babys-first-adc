@@ -68,7 +68,7 @@ value="
 .control
   let v_start = 0
   let v_stop  = 3.3
-  let v_step  = 0.05
+  let v_step  = 0.1
   let n_points = floor((v_stop - v_start) / v_step) + 1
   
   let index = 0
@@ -77,16 +77,16 @@ value="
   let in_vec = v_start + (v_stop - v_start) * vector(n_points) / (n_points - 1)
   let diff_vec = vector($&n_points)
 
-  set temp=75
+  set temp=27
 
   while $&index < $&n_points
     destroy all
-
-    alter V4 = in_vec[$&index]
-    tran 0.1n 60n
     
-    meas tran v_prehold find v(out) at=45n
-    meas tran v_earlyhold find v(out) at=55n
+    alter V4 = in_vec[$&index]
+    tran 0.1n 110n
+    
+    meas tran v_prehold find v(out) at=95n
+    meas tran v_earlyhold find v(out) at=105n
     
     let d_val = v_earlyhold - v_prehold
     let const.diff_vec[index] = d_val
@@ -100,6 +100,12 @@ value="
   setscale v_tracked hold_delta
   settype voltage v_tracked hold_delta
   plot hold_delta vs v_tracked
+  let v = v_tracked[0]
+  let d = hold_delta[0] * 1000
+  echo \\"$&d mV \\\\@ $&v V\\"
+  let v = v_tracked[$&n_points - 1]
+  let d = hold_delta[$&n_points - 1] * 1000
+  echo \\"$&d mV \\\\@ $&v V\\"
 .endc
 "}
 C {devices/lab_pin.sym} 800 730 0 0 {name=p7 sig_type=std_logic lab=VSS}
@@ -129,13 +135,13 @@ device=resistor
 m=1}
 C {devices/lab_pin.sym} 830 160 0 1 {name=p11 sig_type=std_logic lab=VSS}
 C {devices/vsource.sym} 1020 700 0 0 {name=Vclk value="0 ac 1 0
-+ pulse(0 3.3 0 0.1ns 0.1ns 50ns 100ns)"}
-C {devices/vsource.sym} 1020 800 0 0 {name=Vclk1 value="0 ac 1 0
 + pulse(3.3 0 0 0.1ns 0.1ns 50ns 100ns)"}
+C {devices/vsource.sym} 1020 800 0 0 {name=Vclk1 value="0 ac 1 0
++ pulse(0 3.3 0 0.1ns 0.1ns 50ns 100ns)"}
 C {devices/lab_pin.sym} 1020 740 0 0 {name=p12 sig_type=std_logic lab=VSS}
 C {devices/lab_pin.sym} 1020 840 0 0 {name=p13 sig_type=std_logic lab=VSS}
 C {devices/lab_pin.sym} 1020 660 0 0 {name=p14 sig_type=std_logic lab=TRK}
 C {devices/lab_pin.sym} 1020 760 0 0 {name=p15 sig_type=std_logic lab=HLD}
 C {devices/lab_pin.sym} 470 80 0 1 {name=p16 sig_type=std_logic lab=HLD}
 C {devices/lab_pin.sym} 450 80 0 0 {name=p17 sig_type=std_logic lab=TRK}
-C {track_and_hold.sym} 460 160 0 0 {name=x1}
+C {parametric_track_and_hold.sym} 460 160 0 0 {name=x1 WT=1 PFT=1.21 PF=2 WS=5 WB=5 CB=18}

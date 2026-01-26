@@ -7,9 +7,9 @@ V4 in VSS 3
 XM1 VDD out net1 VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=20 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
 R1 net1 VSS 1 m=1
-Vclk TRK VSS 0 ac 1 0 pulse(0 3.3 0 0.1ns 0.1ns 50ns 100ns)
-Vclk1 HLD VSS 0 ac 1 0 pulse(3.3 0 0 0.1ns 0.1ns 50ns 100ns)
-x1 HLD TRK VDD VSS out in track_and_hold
+Vclk TRK VSS 0 ac 1 0 pulse(3.3 0 0 0.1ns 0.1ns 50ns 100ns)
+Vclk1 HLD VSS 0 ac 1 0 pulse(0 3.3 0 0.1ns 0.1ns 50ns 100ns)
+x1 HLD TRK VDD VSS out in parametric_track_and_hold WT=1 PFT=1.21 PF=2 WS=5 WB=5 CB=18
 **** begin user architecture code
 
 ** opencircuitdesign pdks install
@@ -22,7 +22,7 @@ x1 HLD TRK VDD VSS out in track_and_hold
 .control
   let v_start = 0
   let v_stop  = 3.3
-  let v_step  = 0.05
+  let v_step  = 0.1
   let n_points = floor((v_stop - v_start) / v_step) + 1
 
   let index = 0
@@ -31,16 +31,16 @@ x1 HLD TRK VDD VSS out in track_and_hold
   let in_vec = v_start + (v_stop - v_start) * vector(n_points) / (n_points - 1)
   let diff_vec = vector($&n_points)
 
-  set temp=33
+  set temp=27
 
   while $&index < $&n_points
     destroy all
 
     alter V4 = in_vec[$&index]
-    tran 0.1n 60n
+    tran 0.1n 110n
 
-    meas tran v_prehold find v(out) at=45n
-    meas tran v_earlyhold find v(out) at=55n
+    meas tran v_prehold find v(out) at=95n
+    meas tran v_earlyhold find v(out) at=105n
 
     let d_val = v_earlyhold - v_prehold
     let const.diff_vec[index] = d_val
@@ -54,6 +54,12 @@ x1 HLD TRK VDD VSS out in track_and_hold
   setscale v_tracked hold_delta
   settype voltage v_tracked hold_delta
   plot hold_delta vs v_tracked
+  let v = v_tracked[0]
+  let d = hold_delta[0] * 1000
+  echo "$&d mV \@ $&v V"
+  let v = v_tracked[$&n_points - 1]
+  let d = hold_delta[$&n_points - 1] * 1000
+  echo "$&d mV \@ $&v V"
 .endc
 
 
@@ -61,10 +67,10 @@ x1 HLD TRK VDD VSS out in track_and_hold
 **** end user architecture code
 **.ends
 
-* expanding   symbol:  track_and_hold.sym # of pins=6
-** sym_path: /home/ttuser/babys-first-adc/xschem/track_and_hold.sym
-** sch_path: /home/ttuser/babys-first-adc/xschem/track_and_hold.sch
-.subckt track_and_hold HLD TRK VDD VSS out in
+* expanding   symbol:  parametric_track_and_hold.sym # of pins=6
+** sym_path: /home/ttuser/babys-first-adc/xschem/parametric_track_and_hold.sym
+** sch_path: /home/ttuser/babys-first-adc/xschem/parametric_track_and_hold.sch
+.subckt parametric_track_and_hold HLD TRK VDD VSS out in  WT=1 PFT=1.21 PF=2 WS=5 WB=5 CB=18
 *.iopin VSS
 *.iopin VDD
 *.ipin in
@@ -72,37 +78,31 @@ x1 HLD TRK VDD VSS out in track_and_hold
 *.iopin TRK
 *.iopin HLD
 XC1 out VSS sky130_fd_pr__cap_mim_m3_1 W=5 L=5 MF=1 m=1
-V1 net2 net5 3.3
-XM1 out net1 in VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
+XM1 out X in VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W={WT} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
 + ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-R1 VDD VSS 1G m=1
-**** begin user architecture code
-
-
-
-.model switch1 sw vt=1.65 vh=0 ron=1 roff=1G
-
-
-
-**** end user architecture code
-V2 net6 net3 3.3
-XM1p out net4 in VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=1.28 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
+XM1p out net1 in VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W={WT*PFT} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM4 VSS HLD net1 VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
+XM4 VSS HLD X VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W={WS} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM4p net4 TRK VDD VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=2 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
+XM4p net1 TRK VDD VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W={WS*PF} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM2 net1 HLD net2 net2 sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=2 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
+XM2 X HLD P P sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W={WS*PF} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM2p net2 TRK net1 net2 sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W={WS} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM2p net3 TRK net4 net3 sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
+XM3 in X Q VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W={WB} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM6 Q HLD VSS VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W={WB} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM3 in net1 net5 VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
+XM3p net3 net1 in VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W={WB*PF} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM6 net5 HLD VSS VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
+XM6p VDD TRK net3 VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W={WB*PF} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM3p net6 net4 in VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=2 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
-+ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM6p VDD TRK net6 VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=2 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
+XM5 P X VDD P sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W={WB*PF} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XCb P Q sky130_fd_pr__cap_mim_m3_1 W={CB} L={CB} MF=1 m=1
+XCbp net2 net3 sky130_fd_pr__cap_mim_m3_1 W={CB} L={CB} MF=1 m=1
+XM5p VSS net1 net2 net2 sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W={WB*PF} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
 .ends
 

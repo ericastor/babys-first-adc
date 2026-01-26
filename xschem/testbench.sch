@@ -31,7 +31,7 @@ logy=0
 
 
 
-x2=1u
+x2=300n
 y1=0
 
 x1=0
@@ -47,7 +47,7 @@ divy=5
 
 unity=1
 x1=0
-x2=33Meg
+
 divx=5
 subdivx=4
 xlabmag=1.0
@@ -61,10 +61,12 @@ logx=0
 logy=0
 sim_type=sp
 rawfile=$netlist_dir/testbench.raw
-y2=10
+
 y1=-150
 digital=0
-subdivy=4}
+subdivy=4
+x2=33Meg
+y2=10}
 N 800 510 800 520 {
 lab=VDD}
 N 680 510 680 520 {
@@ -134,11 +136,11 @@ only_toplevel=false
 value="
   .option savecurrents
   .control
-    tran 0.05n 3u
+    tran 0.05n 6u
     remzerovec
     write testbench.raw
 
-    let lin-tstart = 5n
+    let lin-tstart = 12.5n
     let lin-tstep = 15n
     let in_spec = in - 1.65
     let out_spec = out - 1.65
@@ -146,13 +148,16 @@ value="
     fft in_spec out_spec
     set appendwrite
     write testbench.raw
+    
+    meas sp peak_value MAX vdb(out_spec) from=1M to=26Meg
+    echo \\"Peak noise: $&peak_value dB\\"
   .endc
 "}
 C {devices/lab_pin.sym} 680 730 0 0 {name=p7 sig_type=std_logic lab=VSS}
 C {devices/lab_pin.sym} 680 650 0 0 {name=p8 sig_type=std_logic lab=in}
 C {devices/lab_pin.sym} 300 160 0 0 {name=p9 sig_type=std_logic lab=in}
 C {devices/vsource.sym} 680 690 0 0 {name=V4 value="0 ac 1 0
-+ sin(1.65 1.65 7e6 0 0 90)"}
++ sin(1.65 1.65 29e6 0 0 90)"}
 C {sky130_fd_pr/nfet_g5v0d10v5.sym} 770 160 0 0 {name=M1
 L=0.5
 W=20
@@ -176,13 +181,13 @@ device=resistor
 m=1}
 C {devices/lab_pin.sym} 830 160 0 1 {name=p11 sig_type=std_logic lab=VSS}
 C {devices/vsource.sym} 900 700 0 0 {name=Vclk value="0 ac 1 0
-+ pulse(0 3.3 0 0.1ns 0.1ns 7.5ns 15ns)"}
-C {devices/vsource.sym} 900 800 0 0 {name=Vclk1 value="0 ac 1 0
 + pulse(3.3 0 0 0.1ns 0.1ns 7.5ns 15ns)"}
+C {devices/vsource.sym} 900 800 0 0 {name=Vclk1 value="0 ac 1 0
++ pulse(0 3.3 0 0.1ns 0.1ns 7.5ns 15ns)"}
 C {devices/lab_pin.sym} 900 740 0 0 {name=p12 sig_type=std_logic lab=VSS}
 C {devices/lab_pin.sym} 900 840 0 0 {name=p13 sig_type=std_logic lab=VSS}
 C {devices/lab_pin.sym} 900 660 0 0 {name=p14 sig_type=std_logic lab=CLK}
 C {devices/lab_pin.sym} 900 760 0 0 {name=p15 sig_type=std_logic lab=CLKB}
 C {devices/lab_pin.sym} 470 80 0 1 {name=p16 sig_type=std_logic lab=CLK}
 C {devices/lab_pin.sym} 450 80 0 0 {name=p17 sig_type=std_logic lab=CLKB}
-C {track_and_hold.sym} 460 160 0 0 {name=x1}
+C {parametric_track_and_hold.sym} 460 160 0 0 {name=x1 WT=1 PFT=1.21 PF=2 WS=5 WB=5 CB=18}
