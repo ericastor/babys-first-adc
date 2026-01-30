@@ -85,13 +85,11 @@ lab=VSS}
 N 680 650 680 660 {
 lab=in}
 N 790 300 790 310 {
-lab=VSS}
+lab=GND}
 N 790 190 790 240 {
 lab=#net1}
 N 790 110 790 130 {
-lab=VDD}
-N 790 160 830 160 {
-lab=VSS}
+lab=#net2}
 N 900 730 900 740 {
 lab=VSS}
 N 900 830 900 840 {
@@ -106,6 +104,10 @@ N 450 80 450 90 {
 lab=CLKB}
 N 680 150 680 160 {
 lab=out}
+N 790 40 790 50 {
+lab=GND}
+N 790 160 870 160 {
+lab=GND}
 C {devices/code.sym} 0 30 0 0 {name=TT_MODELS
 only_toplevel=true
 format="tcleval( @value )"
@@ -155,6 +157,12 @@ value="
     
     meas sp peak_harmonic MAX vdb(out_spec) from=10Meg to=33Meg
     echo \\"Peak harmonic: $&peak_harmonic dB\\"
+
+    setplot tran1
+    let s = (VDD_src#branch)^2
+    meas tran ms AVG s
+    let rms = 1000*sqrt(ms)
+    echo \\"RMS current (from VDD): $&rms mA\\"
   .endc
 "}
 C {devices/lab_pin.sym} 680 730 0 0 {name=p7 sig_type=std_logic lab=VSS}
@@ -176,14 +184,11 @@ sa=0 sb=0 sd=0
 model=nfet_g5v0d10v5
 spiceprefix=X
 }
-C {devices/lab_pin.sym} 790 110 0 1 {name=p6 sig_type=std_logic lab=VDD}
-C {devices/lab_pin.sym} 790 310 0 1 {name=p10 sig_type=std_logic lab=VSS}
 C {devices/res.sym} 790 270 0 0 {name=R1
 value=1
 footprint=1206
 device=resistor
 m=1}
-C {devices/lab_pin.sym} 830 160 0 1 {name=p11 sig_type=std_logic lab=VSS}
 C {devices/vsource.sym} 900 700 0 0 {name=Vclk value="0 ac 1 0
 + pulse(3.3 0 0 0.1ns 0.1ns 7.5ns 15ns)"}
 C {devices/vsource.sym} 900 800 0 0 {name=Vclk1 value="0 ac 1 0
@@ -195,3 +200,7 @@ C {devices/lab_pin.sym} 900 760 0 0 {name=p15 sig_type=std_logic lab=CLKB}
 C {devices/lab_pin.sym} 470 80 0 1 {name=p16 sig_type=std_logic lab=CLK}
 C {devices/lab_pin.sym} 450 80 0 0 {name=p17 sig_type=std_logic lab=CLKB}
 C {parametric_track_and_hold.sym} 460 160 0 0 {name=x1 WT=1 PFT=1.21 PF=2 WS=5 WB=5 CB=18}
+C {devices/gnd.sym} 790 310 0 0 {name=l3 lab=GND}
+C {devices/vsource.sym} 790 80 2 0 {name=V_test value=3.3 savecurrent=false}
+C {devices/gnd.sym} 790 40 2 0 {name=l4 lab=GND}
+C {devices/gnd.sym} 870 160 3 1 {name=l5 lab=GND}

@@ -16,9 +16,9 @@ lab=VSS}
 N 180 100 180 110 {
 lab=VSS}
 N -90 -330 -60 -330 {
-lab=#net1}
+lab=X}
 N -60 -330 -30 -330 {
-lab=#net1}
+lab=X}
 N 100 -330 110 -330 {
 lab=VSS}
 N 70 -410 70 -370 {
@@ -40,9 +40,9 @@ lab=VSS}
 N 70 -330 70 -320 {
 lab=VSS}
 N -120 -130 -60 -130 {
-lab=#net1}
+lab=X}
 N -120 -130 -120 -40 {
-lab=#net1}
+lab=X}
 N -160 -10 -160 -0 {
 lab=in}
 N -190 -40 -160 -40 {
@@ -60,17 +60,17 @@ lab=HLD}
 N -160 0 -160 10 {
 lab=in}
 N -160 -120 -160 -70 {
-lab=#net2}
+lab=Q}
 N -630 -330 -620 -330 {
 lab=VDD}
 N -590 -320 -560 -320 {
-lab=#net3}
+lab=P}
 N -590 -330 -590 -320 {
-lab=#net3}
+lab=P}
 N -560 -330 -560 -320 {
-lab=#net3}
+lab=P}
 N 30 -330 40 -330 {
-lab=#net4}
+lab=#net1}
 N 0 -320 70 -320 {
 lab=VSS}
 N 0 -330 0 -320 {
@@ -88,7 +88,7 @@ lab=TRK}
 N -340 -280 -340 -230 {
 lab=TRK}
 N -290 -250 -290 -210 {
-lab=#net5}
+lab=Y}
 N -340 -230 -340 -180 {
 lab=TRK}
 N -290 -180 -260 -180 {
@@ -96,77 +96,73 @@ lab=VSS}
 N -150 -180 -120 -180 {
 lab=VSS}
 N -290 -210 -120 -210 {
-lab=#net5}
+lab=Y}
 N -150 -340 -150 -330 {
-lab=#net3}
+lab=P}
 N -150 -340 -120 -340 {
-lab=#net3}
+lab=P}
 N -120 -340 -120 -330 {
-lab=#net3}
+lab=P}
 N -60 -430 -60 -330 {
-lab=#net1}
+lab=X}
 N -590 -430 -590 -370 {
-lab=#net1}
+lab=X}
 N -340 -280 -330 -280 {
 lab=TRK}
 N -340 -180 -330 -180 {
 lab=TRK}
 N -160 -150 -160 -120 {
-lab=#net2}
+lab=Q}
 N -80 -180 -60 -180 {
-lab=#net1}
+lab=X}
 N -280 -310 -270 -310 {
 lab=VDD}
-N -120 -290 -120 -210 {
-lab=#net5}
 N -560 -120 -480 -120 {
-lab=#net2}
+lab=Q}
 N -560 -330 -480 -330 {
-lab=#net3}
+lab=P}
 N -480 -200 -480 -120 {
-lab=#net2}
+lab=Q}
 N -480 -330 -480 -260 {
-lab=#net3}
+lab=P}
 N -480 -330 -150 -330 {
-lab=#net3}
+lab=P}
 N -480 -120 -160 -120 {
-lab=#net2}
+lab=Q}
 N -590 -430 -60 -430 {
-lab=#net1}
+lab=X}
 N -160 0 -90 -0 {
 lab=in}
 N -630 -0 -160 0 {
 lab=in}
 N -120 40 -120 130 {
-lab=#net6}
+lab=X}
 N -120 130 -60 130 {
-lab=#net6}
+lab=X}
 N -60 -180 -60 -130 {
-lab=#net1}
-N -60 -330 -60 -180 {
-lab=#net1}
+lab=X}
 N -60 130 -60 180 {
-lab=#net6}
+lab=X}
 N -80 180 -60 180 {
-lab=#net6}
+lab=X}
 N -160 70 -160 120 {
-lab=#net7}
+lab=Qp}
 N -480 120 -160 120 {
-lab=#net7}
+lab=Qp}
 N -160 120 -160 150 {
-lab=#net7}
+lab=Qp}
 N -160 -150 -120 -150 {
-lab=#net2}
+lab=Q}
 N -290 -150 -160 -150 {
-lab=#net2}
+lab=Q}
 N -160 150 -120 150 {
-lab=#net7}
+lab=Qp}
 N -290 150 -160 150 {
-lab=#net7}
+lab=Qp}
 N -560 120 -480 120 {
-lab=#net7}
+lab=Qp}
 N -480 120 -480 200 {
-lab=#net7}
+lab=Qp}
 N -630 120 -620 120 {
 lab=VDD}
 N -590 110 -590 120 {
@@ -178,43 +174,39 @@ lab=VDD}
 N -590 160 -590 170 {
 lab=TRK}
 N -480 260 -480 330 {
-lab=#net8}
+lab=Pp}
 N -560 330 -480 330 {
-lab=#net8}
+lab=Pp}
 N -630 330 -620 330 {
 lab=VSS}
 N -590 320 -560 320 {
-lab=#net8}
+lab=Pp}
 N -590 320 -590 330 {
-lab=#net8}
+lab=Pp}
 N -560 320 -560 330 {
-lab=#net8}
+lab=Pp}
 N -590 370 -590 430 {
-lab=#net6}
+lab=X}
 N -590 430 -60 430 {
-lab=#net6}
+lab=X}
 N -480 330 -150 330 {
-lab=#net8}
-N -60 180 -60 330 {
-lab=#net6}
+lab=Pp}
 N -60 330 -30 330 {
-lab=#net6}
+lab=X}
 N -90 330 -60 330 {
-lab=#net6}
+lab=X}
 N -60 330 -60 430 {
-lab=#net6}
+lab=X}
 N -150 330 -150 340 {
-lab=#net8}
+lab=Pp}
 N -150 340 -120 340 {
-lab=#net8}
+lab=Pp}
 N -120 330 -120 340 {
-lab=#net8}
-N -120 210 -120 290 {
-lab=#net9}
+lab=Pp}
 N -290 210 -120 210 {
-lab=#net9}
+lab=Yp}
 N -290 210 -290 250 {
-lab=#net9}
+lab=Yp}
 N -350 230 -340 230 {
 lab=HLD}
 N -340 180 -340 230 {
@@ -236,7 +228,7 @@ lab=VSS}
 N -0 370 0 380 {
 lab=VSS}
 N 30 330 40 330 {
-lab=#net10}
+lab=#net2}
 N 70 370 70 410 {
 lab=TRK}
 N 100 330 110 330 {
@@ -256,7 +248,23 @@ lab=VDD}
 N -150 180 -120 180 {
 lab=VDD}
 N -190 40 -160 40 {
-lab=VSS}
+lab=VDD}
+N -120 -250 -120 -210 {
+lab=Y}
+N -120 -290 -120 -250 {
+lab=Y}
+N -120 210 -120 250 {
+lab=Yp}
+N -120 250 -120 290 {
+lab=Yp}
+N -60 -270 -60 -180 {
+lab=X}
+N -60 -330 -60 -270 {
+lab=X}
+N -60 180 -60 270 {
+lab=X}
+N -60 270 -60 330 {
+lab=X}
 C {devices/iopin.sym} 190 -460 0 0 {name=VSS lab=VSS}
 C {devices/iopin.sym} 190 -490 0 0 {name=VDD lab=VDD}
 C {devices/ipin.sym} -630 0 0 0 {name=in lab=in}
@@ -569,3 +577,11 @@ C {devices/lab_pin.sym} 110 330 2 0 {name=p17 sig_type=std_logic lab=VDD}
 C {devices/lab_pin.sym} -260 180 2 0 {name=p21 sig_type=std_logic lab=VDD}
 C {devices/lab_pin.sym} -150 180 0 0 {name=p22 sig_type=std_logic lab=VDD}
 C {devices/lab_pin.sym} -190 40 0 0 {name=p23 sig_type=std_logic lab=VDD}
+C {devices/lab_pin.sym} -60 -270 0 0 {name=p24 sig_type=std_logic lab=X}
+C {devices/lab_pin.sym} -120 -250 2 1 {name=p25 sig_type=std_logic lab=Y}
+C {devices/lab_pin.sym} -480 -330 1 0 {name=p26 sig_type=std_logic lab=P}
+C {devices/lab_pin.sym} -480 -120 3 0 {name=p27 sig_type=std_logic lab=Q}
+C {devices/lab_pin.sym} -480 120 1 0 {name=p28 sig_type=std_logic lab=Qp}
+C {devices/lab_pin.sym} -480 330 3 0 {name=p29 sig_type=std_logic lab=Pp}
+C {devices/lab_pin.sym} -120 250 2 1 {name=p30 sig_type=std_logic lab=Yp}
+C {devices/lab_pin.sym} -60 270 0 0 {name=p31 sig_type=std_logic lab=Xp}

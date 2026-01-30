@@ -88,7 +88,7 @@ lab=TRK}
 N -340 -280 -340 -230 {
 lab=TRK}
 N -290 -250 -290 -210 {
-lab=#net2}
+lab=Y}
 N -340 -230 -340 -180 {
 lab=TRK}
 N -290 -180 -260 -180 {
@@ -96,7 +96,7 @@ lab=VSS}
 N -150 -180 -120 -180 {
 lab=VSS}
 N -290 -210 -120 -210 {
-lab=#net2}
+lab=Y}
 N -150 -340 -150 -330 {
 lab=P}
 N -150 -340 -120 -340 {
@@ -118,14 +118,10 @@ lab=X}
 N -280 -310 -270 -310 {
 lab=VDD}
 N -120 -290 -120 -210 {
-lab=#net2}
+lab=Y}
 N -560 -120 -480 -120 {
 lab=Q}
 N -560 -330 -480 -330 {
-lab=P}
-N -480 -200 -480 -120 {
-lab=Q}
-N -480 -330 -480 -260 {
 lab=P}
 N -480 -330 -150 -330 {
 lab=P}
@@ -138,15 +134,15 @@ lab=in}
 N -630 0 -160 0 {
 lab=in}
 N -120 40 -120 130 {
-lab=#net3}
+lab=Xp}
 N -120 130 -60 130 {
-lab=#net3}
+lab=Xp}
 N -60 -180 -60 -130 {
 lab=X}
 N -60 130 -60 180 {
-lab=#net3}
+lab=Xp}
 N -80 180 -60 180 {
-lab=#net3}
+lab=Xp}
 N -160 70 -160 120 {
 lab=Qp}
 N -480 120 -160 120 {
@@ -188,17 +184,17 @@ lab=Pp}
 N -560 320 -560 330 {
 lab=Pp}
 N -590 370 -590 430 {
-lab=#net4}
+lab=Xp}
 N -590 430 -60 430 {
-lab=#net4}
+lab=Xp}
 N -480 330 -150 330 {
 lab=Pp}
 N -60 330 -30 330 {
-lab=#net4}
+lab=Xp}
 N -90 330 -60 330 {
-lab=#net4}
+lab=Xp}
 N -60 330 -60 430 {
-lab=#net4}
+lab=Xp}
 N -150 330 -150 340 {
 lab=Pp}
 N -150 340 -120 340 {
@@ -206,11 +202,11 @@ lab=Pp}
 N -120 330 -120 340 {
 lab=Pp}
 N -120 210 -120 290 {
-lab=#net5}
+lab=#net2}
 N -290 210 -120 210 {
-lab=#net5}
+lab=#net2}
 N -290 210 -290 250 {
-lab=#net5}
+lab=#net2}
 N -350 230 -340 230 {
 lab=HLD}
 N -340 180 -340 230 {
@@ -232,7 +228,7 @@ lab=VSS}
 N 0 370 0 380 {
 lab=VSS}
 N 30 330 40 330 {
-lab=#net6}
+lab=#net3}
 N 70 370 70 410 {
 lab=TRK}
 N 100 330 110 330 {
@@ -258,9 +254,11 @@ lab=X}
 N -60 -270 -60 -180 {
 lab=X}
 N -60 270 -60 330 {
-lab=#net4}
+lab=Xp}
 N -60 180 -60 270 {
-lab=X}
+lab=Xp}
+N -480 -330 -480 -260 {}
+N -480 -200 -480 -120 {}
 C {devices/iopin.sym} 190 -460 0 0 {name=VSS lab=VSS}
 C {devices/iopin.sym} 190 -490 0 0 {name=VDD lab=VDD}
 C {devices/ipin.sym} -630 0 0 0 {name=in lab=in}
@@ -579,3 +577,4 @@ C {devices/lab_pin.sym} -480 -120 3 0 {name=p3 sig_type=std_logic lab=Q}
 C {devices/lab_pin.sym} -480 120 1 0 {name=p4 sig_type=std_logic lab=Qp}
 C {devices/lab_pin.sym} -480 330 3 0 {name=p5 sig_type=std_logic lab=Pp}
 C {devices/lab_pin.sym} -60 270 0 0 {name=p6 sig_type=std_logic lab=Xp}
+C {devices/lab_pin.sym} -120 -250 2 1 {name=p7 sig_type=std_logic lab=Y}
