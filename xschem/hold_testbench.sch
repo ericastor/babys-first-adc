@@ -146,4 +146,8 @@ C {devices/lab_pin.sym} 1020 660 0 0 {name=p14 sig_type=std_logic lab=TRK}
 C {devices/lab_pin.sym} 1020 760 0 0 {name=p15 sig_type=std_logic lab=HLD}
 C {devices/lab_pin.sym} 470 80 0 1 {name=p16 sig_type=std_logic lab=HLD}
 C {devices/lab_pin.sym} 450 80 0 0 {name=p17 sig_type=std_logic lab=TRK}
-C {parametric_track_and_hold.sym} 460 160 0 0 {name=x1 WT=1 PFT=1.21 PF=2 WS=5 WB=5 CB=18}
+C {track_and_hold.sym} 460 160 0 0 {name=x2
+schematic=track_and_hold_parax.sim
+spice_sym_def="tcleval(.include [file normalize ../mag/track_and_hold.sim.spice])"
+tclcommand="textwindow [file normalize ../mag/track_and_hold.sim.spice]"
+}
