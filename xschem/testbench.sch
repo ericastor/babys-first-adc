@@ -32,13 +32,14 @@ logy=0
 
 
 
-x2=300n
+x2=300ns
 y1=0
 
-x1=0
+
 rawfile=$netlist_dir/testbench.raw
 sim_type=tran
-y2=3.3}
+y2=3.3
+x1=0}
 B 2 890 -420 1690 -20 {flags=graph
 
 

@@ -136,15 +136,15 @@ lab=in}
 N -630 -0 -160 0 {
 lab=in}
 N -120 40 -120 130 {
-lab=X}
+lab=Xp}
 N -120 130 -60 130 {
-lab=X}
+lab=Xp}
 N -60 -180 -60 -130 {
 lab=X}
 N -60 130 -60 180 {
-lab=X}
+lab=Xp}
 N -80 180 -60 180 {
-lab=X}
+lab=Xp}
 N -160 70 -160 120 {
 lab=Qp}
 N -480 120 -160 120 {
@@ -186,17 +186,17 @@ lab=Pp}
 N -560 320 -560 330 {
 lab=Pp}
 N -590 370 -590 430 {
-lab=X}
+lab=Xp}
 N -590 430 -60 430 {
-lab=X}
+lab=Xp}
 N -480 330 -150 330 {
 lab=Pp}
 N -60 330 -30 330 {
-lab=X}
+lab=Xp}
 N -90 330 -60 330 {
-lab=X}
+lab=Xp}
 N -60 330 -60 430 {
-lab=X}
+lab=Xp}
 N -150 330 -150 340 {
 lab=Pp}
 N -150 340 -120 340 {
@@ -262,9 +262,9 @@ lab=X}
 N -60 -330 -60 -270 {
 lab=X}
 N -60 180 -60 270 {
-lab=X}
+lab=Xp}
 N -60 270 -60 330 {
-lab=X}
+lab=Xp}
 C {devices/iopin.sym} 190 -460 0 0 {name=VSS lab=VSS}
 C {devices/iopin.sym} 190 -490 0 0 {name=VDD lab=VDD}
 C {devices/ipin.sym} -630 0 0 0 {name=in lab=in}
@@ -502,7 +502,7 @@ spiceprefix=X
 C {sky130_fd_pr/pfet_g5v0d10v5.sym} -100 180 0 1 {name=Mcp
 L=0.5
 W=10
-nf=1
+nf=3
 mult=1
 ad="'int((nf+1)/2) * W/nf * 0.29'" 
 pd="'2*int((nf+1)/2) * (W/nf + 0.29)'"
@@ -546,7 +546,7 @@ C {devices/lab_pin.sym} -270 310 0 1 {name=p13 sig_type=std_logic lab=VSS}
 C {sky130_fd_pr/pfet_g5v0d10v5.sym} 0 350 3 0 {name=M8p
 L=0.5
 W=20
-nf=1
+nf=3
 mult=1
 ad="'int((nf+1)/2) * W/nf * 0.29'" 
 pd="'2*int((nf+1)/2) * (W/nf + 0.29)'"
@@ -561,7 +561,7 @@ C {devices/lab_pin.sym} 0 380 3 0 {name=p15 sig_type=std_logic lab=VSS}
 C {sky130_fd_pr/pfet_g5v0d10v5.sym} 70 350 3 0 {name=M4p
 L=0.5
 W=20
-nf=1
+nf=3
 mult=1
 ad="'int((nf+1)/2) * W/nf * 0.29'" 
 pd="'2*int((nf+1)/2) * (W/nf + 0.29)'"

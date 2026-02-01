@@ -76,6 +76,7 @@ value="
   * Initialize vectors in the 'const' plot
   let in_vec = v_start + (v_stop - v_start) * vector(n_points) / (n_points - 1)
   let diff_vec = vector($&n_points)
+  let late_diff_vec = vector($&n_points)
 
   set temp=27
 
@@ -83,31 +84,39 @@ value="
     destroy all
     
     alter V4 = in_vec[$&index]
-    tran 0.1n 110n
+    tran 0.1n 150n
     
     meas tran v_prehold find v(out) at=95n
     meas tran v_earlyhold find v(out) at=105n
+    meas tran v_latehold find v(out) at=145n
     
     let d_val = v_earlyhold - v_prehold
+    let late_d_val = v_latehold - v_prehold
     let const.diff_vec[index] = d_val
+    let const.late_diff_vec[index] = late_d_val
     
     let index = index + 1
   end
 
   let v_tracked = const.in_vec
   let hold_delta = const.diff_vec
+  let late_hold_delta = const.late_diff_vec
 
   setscale v_tracked hold_delta
-  settype voltage v_tracked hold_delta
-  plot hold_delta vs v_tracked
+  setscale v_tracked late_hold_delta
+  settype voltage v_tracked hold_delta late_hold_delta
+  plot hold_delta late_hold_delta vs v_tracked
   let v = v_tracked[0]
   let d = hold_delta[0] * 1000
-  echo \\"$&d mV \\\\@ $&v V\\"
+  let ld = late_hold_delta[0] * 1000
+  echo \\"$&d mV \\\\@ $&v V ($&ld mV after 45ns)\\"
   let v = v_tracked[$&n_points - 1]
   let d = hold_delta[$&n_points - 1] * 1000
-  echo \\"$&d mV \\\\@ $&v V\\"
+  let ld = late_hold_delta[$&n_points - 1] * 1000
+  echo \\"$&d mV \\\\@ $&v V ($&ld mV after 45ns)\\"
   let m = mean(hold_delta)*1000
-  echo \\"avg error: $&m mV\\"
+  let lm = mean(late_hold_delta)*1000
+  echo \\"avg error: $&m mV ($&lm mV after 45 ns)\\"
 .endc
 "}
 C {devices/lab_pin.sym} 800 730 0 0 {name=p7 sig_type=std_logic lab=VSS}
