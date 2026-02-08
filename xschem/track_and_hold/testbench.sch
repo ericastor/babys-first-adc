@@ -265,6 +265,6 @@ C {devices/gnd.sym} 1640 160 3 1 {name=l8 lab=GND}
 C {track_and_hold.sym} 460 160 0 0 {name=x1}
 C {track_and_hold.sym} 1230 160 0 0 {name=x2
 schematic=track_and_hold_parax.sim
-spice_sym_def="tcleval(.include [file normalize ../mag/track_and_hold.sim.spice])"
-tclcommand="textwindow [file normalize ../mag/track_and_hold.sim.spice]"
+spice_sym_def="tcleval(.include [file normalize ../../mag/track_and_hold.sim.spice])"
+tclcommand="textwindow [file normalize ../../mag/track_and_hold.sim.spice]"
 }
