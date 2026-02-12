@@ -6,6 +6,8 @@
 
 I aim to build as much of an ADC as I can as a complete analog novice with access to textbooks. We'll see where that gets me.
 
+NOTE: Though I am currently a Google employee, this is not an officially supported Google product. This project is not eligible for the [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
+
 ## Analog project
 
 As a Tiny Tapeout analog project, I followed the [analog specs page](https://tinytapeout.com/specs/analog/).

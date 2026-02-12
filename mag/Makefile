@@ -15,25 +15,25 @@ tt_analog_1x2_3v3.def:
 	wget https://raw.githubusercontent.com/TinyTapeout/tt-support-tools/tt08/def/analog/tt_analog_1x2_3v3.def
 
 start: $(TEMPLATE_FILE)
-	magic -rcfile $(MAGIC_RC) -noconsole -dnull tcl/tt-analog-draw.tcl $(TEMPLATE_FILE) $(PROJECT_NAME)
+	magic -rcfile $(MAGIC_RC) -noconsole -dnull ../third_party/tinytapeout/mag/tcl/tt-analog-draw.tcl $(TEMPLATE_FILE) $(PROJECT_NAME)
 
 $(PROJECT_NAME).lvs.spice: $(PROJECT_NAME).mag
-	magic -rcfile $(MAGIC_RC) -noconsole -dnull tcl/extract_for_lvs.tcl $(PROJECT_NAME)
+	magic -rcfile $(MAGIC_RC) -noconsole -dnull ../third_party/tinytapeout/mag/tcl/extract_for_lvs.tcl $(PROJECT_NAME)
 	rm -f *.ext
 
 antenna:
-	magic -rcfile $(MAGIC_RC) -noconsole -dnull tcl/antenna.tcl $(PROJECT_NAME)
+	magic -rcfile $(MAGIC_RC) -noconsole -dnull ../third_party/tinytapeout/mag/tcl/antenna.tcl $(PROJECT_NAME)
 	rm -f *.ext
 
 drc:
-	magic -rcfile $(MAGIC_RC) -noconsole -dnull tcl/drc.tcl $(PROJECT_NAME)
-	
+	magic -rcfile $(MAGIC_RC) -noconsole -dnull ../third_party/tinytapeout/mag/tcl/drc.tcl $(PROJECT_NAME)
+
 $(PROJECT_NAME).sim.spice: $(PROJECT_NAME).mag
-	magic -rcfile $(MAGIC_RC) -noconsole -dnull tcl/extract_for_sim.tcl $(PROJECT_NAME)
+	magic -rcfile $(MAGIC_RC) -noconsole -dnull ../third_party/tinytapeout/mag/tcl/extract_for_sim.tcl $(PROJECT_NAME)
 	rm -f *.ext
 
 lvs.report: $(PROJECT_NAME).lvs.spice ../src/project.v
-	netgen -batch eval "set project $(PROJECT_NAME) ; source tcl/lvs_netgen.tcl"
+	netgen -batch eval "set project $(PROJECT_NAME) ; source ../third_party/tinytapeout/mag/tcl/lvs_netgen.tcl"
 
 lvs: lvs.report
 	@propOk=1; match=0; port=1; \
@@ -65,7 +65,7 @@ lvs: lvs.report
 
 update_gds:
 	mkdir -p ../gds ../lef
-	magic -rcfile $(MAGIC_RC) -noconsole -dnull tcl/update_gds_lef.tcl $(PROJECT_NAME)
+	magic -rcfile $(MAGIC_RC) -noconsole -dnull ../third_party/tinytapeout/mag/tcl/update_gds_lef.tcl $(PROJECT_NAME)
 
 clean:
 	rm -f lvs.report *.lvs.spice *.nodes
