@@ -157,6 +157,6 @@ C {devices/lab_pin.sym} 470 80 0 1 {name=p16 sig_type=std_logic lab=HLD}
 C {devices/lab_pin.sym} 450 80 0 0 {name=p17 sig_type=std_logic lab=TRK}
 C {track_and_hold.sym} 460 160 0 0 {name=x2
 schematic=track_and_hold_parax.sim
-spice_sym_def="tcleval(.include [file normalize ../../mag/track_and_hold.sim.spice])"
-tclcommand="textwindow [file normalize ../../mag/track_and_hold.sim.spice]"
+spice_sym_def="tcleval(.include [file normalize ../mag/track_and_hold.sim.spice])"
+tclcommand="textwindow [file normalize ../mag/track_and_hold.sim.spice]"
 }

@@ -1,0 +1,70 @@
+magic
+tech sky130A
+magscale 1 2
+timestamp 1771258459
+<< viali >>
+rect 820 480 980 520
+rect 1540 480 1700 520
+rect 920 -560 1000 -520
+rect 1520 -560 1600 -520
+<< metal1 >>
+rect 1160 540 1360 608
+rect 800 520 1720 540
+rect 800 480 820 520
+rect 980 480 1540 520
+rect 1700 480 1720 520
+rect 800 460 1720 480
+rect 800 360 1000 460
+rect 1160 408 1360 460
+rect 1520 360 1720 460
+rect 680 80 760 360
+rect 1300 240 1480 360
+rect 500 -120 760 80
+rect 680 -280 760 -120
+rect 900 20 1000 240
+rect 1300 20 1380 240
+rect 900 -60 1380 20
+rect 900 -280 1000 -60
+rect 1300 -280 1380 -60
+rect 1520 20 1620 240
+rect 1820 20 2020 80
+rect 1520 -60 2020 20
+rect 1520 -280 1620 -60
+rect 1820 -120 2020 -60
+rect 680 -400 860 -280
+rect 1300 -400 1480 -280
+rect 900 -500 1000 -400
+rect 1160 -500 1360 -460
+rect 1520 -500 1620 -400
+rect 900 -520 1620 -500
+rect 900 -560 920 -520
+rect 1000 -560 1520 -520
+rect 1600 -560 1620 -520
+rect 900 -580 1620 -560
+rect 1160 -660 1360 -580
+use sky130_fd_pr__pfet_g5v0d10v5_KLAZY6  XM1
+timestamp 1771181945
+transform 0 1 900 -1 0 300
+box -308 -397 308 397
+use sky130_fd_pr__nfet_g5v0d10v5_SMGAG4  XM2
+timestamp 1771258459
+transform 0 1 948 -1 0 -342
+box -278 -308 278 308
+use sky130_fd_pr__pfet_g5v0d10v5_KLAZY6  XM3
+timestamp 1771181945
+transform 0 1 1623 -1 0 300
+box -308 -397 308 397
+use sky130_fd_pr__nfet_g5v0d10v5_SMGAG4  XM4
+timestamp 1771258459
+transform 0 1 1568 -1 0 -342
+box -278 -308 278 308
+<< labels >>
+flabel metal1 500 -120 700 80 0 FreeSans 256 0 0 0 in
+port 1 nsew
+flabel metal1 1820 -120 2020 80 0 FreeSans 256 0 0 0 out
+port 2 nsew
+flabel metal1 1160 408 1360 608 0 FreeSans 256 0 0 0 VDD
+port 0 nsew
+flabel metal1 1160 -660 1360 -460 0 FreeSans 256 0 0 0 VSS
+port 3 nsew
+<< end >>

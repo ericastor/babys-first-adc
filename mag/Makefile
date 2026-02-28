@@ -1,4 +1,5 @@
 PROJECT_NAME ?= tt_um_babys_first_adc
+PROJECT_DIR ?= $(PROJECT_NAME)
 MAGIC_RC := $(PDK_ROOT)/sky130A/libs.tech/magic/sky130A.magicrc
 TEMPLATE_FILE := tt_analog_1x2.def
 TEMPLATE_FILE := tt_analog_1x2_3v3.def
@@ -33,7 +34,7 @@ $(PROJECT_NAME).sim.spice: $(PROJECT_NAME).mag
 	rm -f *.ext
 
 lvs.report: $(PROJECT_NAME).lvs.spice ../src/project.v
-	netgen -batch eval "set project $(PROJECT_NAME) ; source ../third_party/tinytapeout/mag/tcl/lvs_netgen.tcl"
+	netgen -batch eval "set project $(PROJECT_NAME) ; set project_dir $(PROJECT_DIR) ; source tcl/lvs_netgen.tcl"
 
 lvs: lvs.report
 	@propOk=1; match=0; port=1; \

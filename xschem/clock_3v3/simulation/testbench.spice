@@ -1,0 +1,200 @@
+** sch_path: /home/ttuser/babys-first-adc/xschem/clock_3v3/testbench.sch
+**.subckt testbench out out_bar
+*.opin out
+*.opin out_bar
+VDD_src VDD GND 3.3
+VSS_src VSS GND 0
+XM1 net1 out net2 GND sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=20 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+R1 net2 GND 1 m=1
+Vclk CLKs VSS pulse(0 1.8 3.75ns 0.1ns 0.1ns 7.5ns 15ns)
+V_test net1 GND 3.3
+x1 CLK CLKB out VSS VDD out_bar clock_3v3_parax
+XM2 net1 out_bar net2 GND sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=20 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+VDDL_src VDDL GND 1.8
+x2 VDDL VSS CLKB CLKs CLK phase_splitter
+**** begin user architecture code
+
+** opencircuitdesign pdks install
+.lib /home/ttuser/pdk/sky130A/libs.tech/ngspice/sky130.lib.spice tt_mm
+.include /home/ttuser/pdk/sky130A/libs.ref/sky130_fd_sc_hd/spice/sky130_fd_sc_hd.spice
+.include /home/ttuser/pdk/sky130A/libs.ref/sky130_fd_sc_hvl/spice/sky130_fd_sc_hvl.spice
+
+
+
+
+  .option savecurrents
+  .control
+  set numruns = 100
+  let run = 0
+
+  setplot new
+  set mc_plot = $curplot
+  let d10 = unitvec($numruns) - 1
+  let d10b = unitvec($numruns) - 1
+  let d50 = unitvec($numruns) - 1
+  let d50b = unitvec($numruns) - 1
+  let dt = unitvec($numruns) - 1
+  let dtb = unitvec($numruns) - 1
+  let d90 = unitvec($numruns) - 1
+  let d90b = unitvec($numruns) - 1
+  let i_rms = unitvec($numruns) - 1
+
+  dowhile $&run < $numruns
+    reset
+    set temp = 27
+    tran 0.01n 60n
+    remzerovec
+    write testbench.raw
+    set appendwrite
+
+    meas tran dead_10_on TRIG out_bar val=0.33 FALL=1 TARG out val=0.33 RISE=1
+    meas tran dead_10_off TRIG out val=0.33 FALL=1 TARG out_bar val=0.33 RISE=1
+    let d10 = min(dead_10_on, dead_10_off)
+    let d10b = max(dead_10_on, dead_10_off)
+    set d10s = $&d10
+    set d10bs = $&d10b
+
+    meas tran dead_50_on TRIG out_bar val=1.65 FALL=1 TARG out val=1.65 RISE=1
+    meas tran dead_50_off TRIG out val=1.65 FALL=1 TARG out_bar val=1.65 RISE=1
+    let d50 = min(dead_50_on, dead_50_off)
+    let d50b = max(dead_50_on, dead_50_off)
+    set d50s = $&d50
+    set d50bs = $&d50b
+
+    meas tran dead_t_on TRIG out_bar val=2.7 FALL=1 TARG out val=2.7 RISE=1
+    meas tran dead_t_off TRIG out val=2.97 FALL=1 TARG out_bar val=2.7 RISE=1
+    let dt = min(dead_t_on, dead_t_off)
+    let dtb = max(dead_t_on, dead_t_off)
+    set dts = $&dt
+    set dtbs = $&dtb
+
+    meas tran dead_90_on TRIG out_bar val=2.97 FALL=1 TARG out val=2.97 RISE=1
+    meas tran dead_90_off TRIG out val=2.97 FALL=1 TARG out_bar val=2.97 RISE=1
+    let d90 = min(dead_90_on, dead_90_off)
+    let d90b = max(dead_90_on, dead_90_off)
+    set d90s = $&d90
+    set d90bs = $&d90b
+
+    let i2 = (abs(vdd_src#branch)+abs(vddl_src#branch))^2
+    meas tran ms AVG i2
+    let i_rms = sqrt(ms)
+    set i_rms_s = $&i_rms
+
+*    let i_scaled = 6000*(abs(vdd_src#branch)+abs(vddl_src#branch))
+*    plot clk out out_bar i_scaled xl 3.5n 5.5n
+
+    set tran_plot = $curplot
+    setplot $mc_plot
+    let d10[$&run] = $d10s
+    let d10b[$&run] = $d10bs
+    let d50[$&run] = $d50s
+    let d50b[$&run] = $d50bs
+    let dt[$&run] = $dts
+    let dtb[$&run] = $dtbs
+    let d90[$&run] = $d90s
+    let d90b[$&run] = $d90bs
+    let i_rms[$&run] = $i_rms_s
+    setplot $tran_plot
+
+    let run = run + 1
+  end
+  setplot $mc_plot
+  let min_d10 = minimum(d10)*1e9
+  let max_d10 = maximum(d10b)*1e9
+  let min_d50 = minimum(d50)*1e9
+  let max_d50 = maximum(d50b)*1e9
+  let min_dt = minimum(dt)*1e9
+  let max_dt = maximum(dtb)*1e9
+  let min_d90 = minimum(d90)*1e9
+  let max_d90 = maximum(d90b)*1e9
+  let min_i_rms = minimum(i_rms)*1e6
+  let max_i_rms = maximum(i_rms)*1e6
+  echo ""
+  echo "Dead time (10%): $&min_d10 - $&max_d10 ns"
+  echo "Dead time (50%): $&min_d50 - $&max_d50 ns"
+  echo "Dead time (2V7): $&min_dt - $&max_dt ns"
+  echo "Dead time (90%): $&min_d90 - $&max_d90 ns"
+  echo "I_rms: $&min_i_rms - $&max_i_rms uA"
+  .endc
+
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  clock_3v3/clock_3v3.sym # of pins=6
+** sym_path: /home/ttuser/babys-first-adc/xschem/clock_3v3/clock_3v3.sym
+** sch_path: /home/ttuser/babys-first-adc/xschem/clock_3v3/clock_3v3.sch
+.subckt clock_3v3 CLK_3V3 CLK VSS_3V3 VDD_3V3 CLKB CLKB_3V3
+*.ipin CLK
+*.opin CLK_3V3
+*.opin CLKB_3V3
+*.iopin VSS_3V3
+*.iopin VDD_3V3
+*.ipin CLKB
+XM1 RCLKB_3V3 CLK VSS_3V3 VSS_3V3 sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM2 VSS_3V3 CLKB RCLK_3V3 VSS_3V3 sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM3 RCLKB_3V3 RCLK_3V3 VDD_3V3 VDD_3V3 sky130_fd_pr__pfet_g5v0d10v5 L=1.5 W=0.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM4 VDD_3V3 RCLKB_3V3 RCLK_3V3 VDD_3V3 sky130_fd_pr__pfet_g5v0d10v5 L=1.5 W=0.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+x7 net2 VSS_3V3 VSS_3V3 VDD_3V3 VDD_3V3 CLKB_3V3 sky130_fd_sc_hvl__inv_2
+x8 net1 VSS_3V3 VSS_3V3 VDD_3V3 VDD_3V3 CLK_3V3 sky130_fd_sc_hvl__inv_2
+x1 VDD_3V3 RCLKB_3V3 RCLK_3V3 VSS_3V3 net2 net1 nonoverlapping_generator
+.ends
+
+
+* expanding   symbol:  clock_3v3/phase_splitter.sym # of pins=5
+** sym_path: /home/ttuser/babys-first-adc/xschem/clock_3v3/phase_splitter.sym
+** sch_path: /home/ttuser/babys-first-adc/xschem/clock_3v3/phase_splitter.sch
+.subckt phase_splitter VDDL VSS CLKB X CLK
+*.ipin X
+*.opin CLK
+*.opin CLKB
+*.iopin VDDL
+*.iopin VSS
+x2 net1 VSS VSS VDDL VDDL net2 sky130_fd_sc_hd__clkinv_2
+x1 X VSS VSS VDDL VDDL net1 sky130_fd_sc_hd__clkinv_2
+x3 net1 VSS VSS VDDL VDDL CLK sky130_fd_sc_hd__clkinv_2
+x4 net2 VSS VSS VDDL VDDL CLKB sky130_fd_sc_hd__clkinv_2
+.ends
+
+
+* expanding   symbol:  clock_3v3_parax.sym # of pins=6
+** sym_path: /home/ttuser/babys-first-adc/xschem/clock_3v3/clock_3v3.sym
+.include /home/ttuser/babys-first-adc/mag/clock_3v3.sim.spice
+
+* expanding   symbol:  clock_3v3/nonoverlapping_generator.sym # of pins=6
+** sym_path: /home/ttuser/babys-first-adc/xschem/clock_3v3/nonoverlapping_generator.sym
+** sch_path: /home/ttuser/babys-first-adc/xschem/clock_3v3/nonoverlapping_generator.sch
+.subckt nonoverlapping_generator VDD X XB VSS Y YB
+*.iopin VSS
+*.iopin VDD
+*.ipin X
+*.ipin XB
+*.opin YB
+*.opin Y
+XM1 YB X VDD VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=0.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM2 net1 X YB VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM3 YB Y VDD VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=0.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM4 VSS Y net1 VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM5 Y XB VDD VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=0.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM6 net2 XB Y VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM7 Y YB VDD VDD sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=0.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM8 VSS YB net2 VSS sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+.ends
+
+.GLOBAL GND
+.end

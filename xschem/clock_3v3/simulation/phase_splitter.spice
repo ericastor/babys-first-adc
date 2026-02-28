@@ -1,0 +1,9 @@
+** sch_path: /home/ttuser/babys-first-adc/xschem/clock_3v3/phase_splitter.sch
+.subckt phase_splitter X CLK CLKB
+*.PININFO X:I CLK:O CLKB:O
+x1 X VGND VNB VPB VPWR CLK sky130_fd_sc_hd__clkbuf_8
+x2 X VGND VNB VPB VPWR CLKB sky130_fd_sc_hd__clkinv_8
+x3 CLK VGND VNB VPB VPWR CLKB sky130_fd_sc_hd__inv_1
+x4 CLKB VGND VNB VPB VPWR CLK sky130_fd_sc_hd__inv_1
+.ends
+.end
